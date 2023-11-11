@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node ./src/server.js",
     "backend": "nodemon ./src/server.js",
-    "build": "eslint ."
+    "build": "npx eslint ."
   },
   "keywords": [],
   "author": "",
