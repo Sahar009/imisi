@@ -110,7 +110,7 @@ const registerListener = async_handler( async(req,res) =>{
             })
         }
         if (user && passwordIsCorrect){
-            const { _id, name, email, photo, phone, bio,password } = user;
+            const { _id, name, email,password } = user;
             res.status(200).json({
                 _id,
                 name,

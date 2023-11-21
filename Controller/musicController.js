@@ -28,10 +28,11 @@ const addMusic = async_handler(async (req, res) => {
     }
 
     fileData = {
-      fileName: req.file.originalname,
-      filePath: uploadedFile.secure_url,
-      fileType: req.file.mimetype,
-      fileSize: fileSizeFormatter(req.file.size, 2),
+        fileName: req.file.originalname,
+        filePath:uploadedFile.secure_url,
+    
+        fileType: req.file.mimetype,
+        fileSize: fileSizeFormatter(req.file.size, 2),
     };
   }
 
@@ -41,7 +42,7 @@ const addMusic = async_handler(async (req, res) => {
     name,
     genre,
     description,
-    audio: fileData,
+    audio,
   });
 
   res.status(201).json(createdMusic);

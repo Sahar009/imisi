@@ -1,6 +1,6 @@
 const express = require('express');
 const { registerListener, loginListener, logOutListener, getListener, loggedInStatus, UpdateListener, ChangePassword, forgotpassword, resetPassword } = require('../Controller/ListenerController.js');
-const protect = require('../middleware/Authmiddleware.js');
+const protect = require('../middleware/listenermiddleware');
 const router = express.Router()
 
 

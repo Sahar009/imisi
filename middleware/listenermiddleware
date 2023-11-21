@@ -12,7 +12,7 @@ const protect = async_handler(async(req,res,next) =>{
     
         // Verify Token
         const verified = jwt.verify(token, process.env.JWT_SECRET);
-        // Get user id from token
+        // Get user id sfrom token
         const listener = await Listener.findById(verified.id).select("-password");
     
         if (!listener) {
