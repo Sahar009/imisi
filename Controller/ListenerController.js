@@ -12,6 +12,9 @@ const generateToken = (id) =>{
     return jwt.sign({id}, process.env.JWT_SECRET, {expiresIn: '1d'})
 };
 
+const test = async_handler(async (req,res) =>{
+res.send('mofo')
+})
 
 const registerListener = async_handler( async(req,res) =>{
     const {name,email, password} = req.body
@@ -338,6 +341,7 @@ module.exports ={
     ChangePassword,
     forgotpassword,
     resetPassword,
+    test
    
   
 }

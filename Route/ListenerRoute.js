@@ -1,9 +1,9 @@
 const express = require('express');
-const { registerListener, loginListener, logOutListener, getListener, loggedInStatus, UpdateListener, ChangePassword, forgotpassword, resetPassword } = require('../Controller/ListenerController.js');
+const { registerListener, loginListener, logOutListener, getListener, loggedInStatus, UpdateListener, ChangePassword, forgotpassword, resetPassword, test } = require('../Controller/ListenerController.js');
 const protect = require('../middleware/listenermiddleware');
 const router = express.Router()
 
-
+router.get('/test', test)
 router.post("/register", registerListener)
 router.post('/login', loginListener)
 router.get('/logout', logOutListener);
