@@ -32,7 +32,7 @@ app.use('/api/listeners',listenerRoute )
 app.use('/api/musics', musicRoute)
     
 
-    mongoose.connect(`mongodb+srv://akinwumisehinde:sahar@cluster0.3fqmwzt.mongodb.net/imis?retryWrites=true&w=majority`,{ useNewUrlParser: true, useUnifiedTopology: true })
+    mongoose.connect(`mongodb+srv://akinwumisehinde:sahar@cluster0.3fqmwzt.mongodb.net/imis?retryWrites=true&w=majority`)
     .then(() =>{
         app.listen(PORT,()=>{
             console.log(`Port now starting on Port ${PORT}`)

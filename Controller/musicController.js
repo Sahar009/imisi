@@ -48,7 +48,7 @@ const addMusic = async_handler(async (req, res) => {
         api_key: '897445842132443', 
         api_secret: 'H1XjbfjR1TOhWQeEhSjZWXcGyzs' 
       });
-      console.log('Uploaded Audio:', uploadedAudio);
+     
       audioFileData = {
         fileName: req.files['audio'][0].originalname,
         filePath: uploadedAudio.secure_url,

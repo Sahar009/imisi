@@ -6,27 +6,28 @@ const storage = multer.diskStorage({
     cb(null, "uploads");
   },
   filename: function (req, file, cb) {
-    cb(
-      null,
-      new Date().toISOString().replace(/:/g, "-") + "-" + file.originalname
-    ); 
+    const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
+    cb(null, file.fieldname + "-" + uniqueSuffix + "-" + file.originalname);
   },
 });
 
 // Specify file format that can be saved
 function fileFilter(req, file, cb) {
+  const allowedAudioMimeTypes = ["audio/mpeg", "audio/mp3"];
+
   if (
     file.mimetype === "image/png" ||
     file.mimetype === "image/jpg" ||
     file.mimetype === "image/jpeg" ||
-    file.mimetype === "video/mp4"||
-    file.mimetype === "audio/mp3"
+    file.mimetype === "video/mp4" ||
+    allowedAudioMimeTypes.includes(file.mimetype)
   ) {
     cb(null, true);
   } else {
     cb(null, false);
   }
 }
+
 
 const upload = multer({ storage, fileFilter });
 
