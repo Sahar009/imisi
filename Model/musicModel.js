@@ -24,6 +24,10 @@ description: {
     required:[true,'please add a description'],
     trim:true
 },
+image: {
+    type:Object,
+   default:{}
+},
 audio: {
     type:Object,
    default:{}

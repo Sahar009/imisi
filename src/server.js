@@ -22,6 +22,7 @@ app.get('/', (req,res) =>{
     //middlewaress
 app.use(express.json())
 app.use(cookieParser())
+app.use(bodyParser.json())
 app.use(express.urlencoded({extended:false}))
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')))
 //route middleware
@@ -31,7 +32,7 @@ app.use('/api/listeners',listenerRoute )
 app.use('/api/musics', musicRoute)
     
 
-    mongoose.connect(`mongodb+srv://akinwumisehinde:sahar@cluster0.3fqmwzt.mongodb.net/imis?retryWrites=true&w=majority`)
+    mongoose.connect(`mongodb+srv://akinwumisehinde:sahar@cluster0.3fqmwzt.mongodb.net/imis?retryWrites=true&w=majority`,{ useNewUrlParser: true, useUnifiedTopology: true })
     .then(() =>{
         app.listen(PORT,()=>{
             console.log(`Port now starting on Port ${PORT}`)

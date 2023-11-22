@@ -4,45 +4,72 @@ const { fileSizeFormatter } = require("../utility/uploads");
 const cloudinary = require("cloudinary").v2;
 
 const addMusic = async_handler(async (req, res) => {
-  const { name, description, genre, audio } = req.body;
+  const { name, description, genre } = req.body;
 
-  // validation
+  // Validation
   if (!name || !genre) {
     res.status(400);
     throw new Error('Please fill in all fields');
   }
 
-  // upload music
-  let fileData = {};
-  if (req.file) {
-    // Save audio to cloudinary
-    let uploadedFile;
+  // Upload image
+  let imageFileData = {};
+  if (req.files && req.files['image'] && req.files['image'][0]) {
     try {
-      uploadedFile = await cloudinary.uploader.upload(req.file.path, {
+      const uploadedImage = await cloudinary.uploader.upload(req.files['image'][0].path, {
         folder: "imisi audio",
-        resource_type: "audio",
+        resource_type: "image",
+        cloud_name: 'dvjdvvnn3', 
+        api_key: '897445842132443', 
+        api_secret: 'H1XjbfjR1TOhWQeEhSjZWXcGyzs' 
       });
-    } catch (error) {
-      res.status(500);
-      throw new Error("Song could not be uploaded");
-    }
 
-    fileData = {
-        fileName: req.file.originalname,
-        filePath:uploadedFile.secure_url,
-    
-        fileType: req.file.mimetype,
-        fileSize: fileSizeFormatter(req.file.size, 2),
-    };
+      imageFileData = {
+        fileName: req.files['image'][0].originalname,
+        filePath: uploadedImage.secure_url,
+        fileType: req.files['image'][0].mimetype,
+        fileSize: fileSizeFormatter(req.files['image'][0].size, 2),
+      };
+    } catch (error) {
+      console.error("Error uploading image to Cloudinary:", error);
+      res.status(500).json({ error: "Image could not be uploaded", details: error.message });
+      return;
+    }
   }
 
-  // create music
+  // Upload audio
+  let audioFileData = {};
+  if (req.files && req.files['audio'] && req.files['audio'][0]) {
+    try {
+      const uploadedAudio = await cloudinary.uploader.upload(req.files['audio'][0].path, {
+        folder: "imisi audio",
+        resource_type: "auto",
+        cloud_name: 'dvjdvvnn3', 
+        api_key: '897445842132443', 
+        api_secret: 'H1XjbfjR1TOhWQeEhSjZWXcGyzs' 
+      });
+      console.log('Uploaded Audio:', uploadedAudio);
+      audioFileData = {
+        fileName: req.files['audio'][0].originalname,
+        filePath: uploadedAudio.secure_url,
+        fileType: req.files['audio'][0].mimetype,
+        fileSize: fileSizeFormatter(req.files['audio'][0].size, 2),
+      };
+    } catch (error) {
+      console.error("Error uploading audio to Cloudinary:", error);
+  res.status(500).json({ error: "Audio could not be uploaded", details: error.message });
+  return;
+    }
+  }
+
+  // Create music
   const createdMusic = await MusicModel.create({
     user: req.user.id,
     name,
     genre,
     description,
-    audio,
+    image: imageFileData,
+    audio: audioFileData,
   });
 
   res.status(201).json(createdMusic);
