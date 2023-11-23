@@ -8,7 +8,7 @@ const dotenv = require("dotenv").config();
 const PORT = 5000;
 const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
-
+const errorHandler = require('../middleware/errorMiddleware')
 const path = require("path");
 const serverPath = path.resolve(__dirname, "server.js");
 require(serverPath);
@@ -16,6 +16,8 @@ require(serverPath);
 app.get("/", (req, res) => {
   res.send("Home page");
 });
+
+
 
 //middlewaress
 app.use(express.json());
@@ -28,6 +30,9 @@ app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 app.use("/api/users", userRoute);
 app.use("/api/listeners", listenerRoute);
 app.use("/api/musics", musicRoute);
+
+// error handler
+app.use(errorHandler)
 
 mongoose
   .connect(
