@@ -76,27 +76,28 @@ const addMusic = async_handler(async (req, res) => {
 });
 
 // // get all musics
-// const getMusics = async_handler(async(req,res) =>{
-// const musics = await Music.find({user:req.user.id}).sort('-createdAt')
-// // user:req.user.id
-// res.status(200).json(musics)
-// })
+const getMusics = async_handler(async (req, res) => {
+  // Assuming you have a MusicModel defined
+
+  // Use the 'find' method to retrieve all music records
+  const musics = await MusicModel.find().sort('-createdAt');
+
+  // Respond with a JSON containing all the retrieved music records
+  res.status(200).json(musics);
+});
 
 // // Get single music
-// const getMusic = async_handler(async (req, res) => {
-//     const music = await Music.findById(req.params.id);
-//     // if music doesnt exist
-//     if (!music) {
-//       res.status(404);
-//       throw new Error("music not found");
-//     }
-//     // Match music to its user
-//     if (music.user.toString() !== req.user.id) {
-//       res.status(401);
-//       throw new Error("User not authorized");
-//     }
-//     res.status(200).json(music);
-//   });
+const getMusic = async_handler(async (req, res) => {
+  const music = await MusicModel.findById(req.params.id);
+
+  if (!music) {
+    res.status(404);
+    throw new Error("Music not found");
+  }
+
+  res.status(200).json(music);
+});
+
 
 
 //   // Delete Music
@@ -182,8 +183,8 @@ const addMusic = async_handler(async (req, res) => {
 
 module.exports ={
     addMusic,
-    // getMusics,
-    // getMusic,
+    getMusics,
+    getMusic,
     // // updateMusic,
     // deleteMusic
     
