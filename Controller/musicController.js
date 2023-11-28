@@ -77,7 +77,7 @@ const addMusic = async_handler(async (req, res) => {
 
 // // get all musics
 const getMusics = async_handler(async (req, res) => {
-  // Assuming you have a MusicModel defined
+  
 
   // Use the 'find' method to retrieve all music records
   const musics = await MusicModel.find().sort('-createdAt');
@@ -101,21 +101,21 @@ const getMusic = async_handler(async (req, res) => {
 
 
 //   // Delete Music
-// const deleteMusic = async_handler(async (req, res) => {
-//     const music = await Music.findById(req.params.id);
-//     // if Music doesnt exist
-//     if (!music) {
-//       res.status(404);
-//       throw new Error("Music not found");
-//     }
-//     // Match Music to its user
-//     if (music.user.toString() !== req.user.id) {
-//       res.status(401);
-//       throw new Error("User not authorized");
-//     }
-//     await music.deleteOne();
-//     res.status(200).json({ message: "Music successfully deleted." });
-//   });
+const deleteMusic = async_handler(async (req, res) => {
+    const music = await MusicModel.findById(req.params.id);
+    // if Music doesnt exist
+    if (!music) {
+      res.status(404);
+      throw new Error("Music not found");
+    }
+    // Match Music to its user
+    if (music.user.toString() !== req.user.id) {
+      res.status(401);
+      throw new Error("User not authorized");
+    }
+    await music.deleteOne();
+    res.status(200).json({ message: "Music successfully deleted." });
+  });
 
 
   // update Music
@@ -186,6 +186,6 @@ module.exports ={
     getMusics,
     getMusic,
     // // updateMusic,
-    // deleteMusic
+    deleteMusic
     
 }

@@ -98,48 +98,30 @@ const registerListener = async_handler( async(req,res) =>{
         }
         //user exists , check if password is correct 
         const passwordIsCorrect = await bcrypt.compare(password,user.password)
-        //send HTTP ONL COOKIE
+      
+        if (!passwordIsCorrect) {
+            res.status(400);
+            throw new Error('Invalid email or password');
+        }
         const token = generateToken(user._id);
 
-        if(passwordIsCorrect){
-            res.cookie('token', token, {
-                path:'/',
-                httpOnly:true,
-                // expires:new Date(Date.now() + 1000 * 86400), //1 day
-                expires: new Date('9999-12-31T23:59:59Z'),
-                sameSite:'none',
-                secure:true
-        
-            })
-        }
-        if (user && passwordIsCorrect){
-            const { _id, name, email,password } = user;
-            res.status(200).json({
-                _id,
-                name,
-                email,
-                password,
-                token,
-            });
-
-        }else{
-            res.status(400);
-            throw new Error('invalid email or password')
-        }
+        // Send token to the client (Flutter)
+        res.status(200).json({
+            _id: user._id,
+            name: user.name,
+            email: user.email,
+            photo: user.photo,
+            phone: user.phone,
+            bio: user.bio,
+            token, // Send the token to the client
+        });
     }
 
      )
 
      //logout user
      const logOutListener = async_handler(async(req,res) =>{
-        res.cookie('token', '', {
-            path:'/',
-            httpOnly:true,
-            expires:new Date(0), //1 day
-            sameSite:'none',
-            secure:true
-    
-        });
+      
         return res.status(200).json({message:'logout succesfully'})
      })
      

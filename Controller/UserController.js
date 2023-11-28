@@ -13,137 +13,107 @@ const generateToken = (id) =>{
 };
 
 
-const registerUser = async_handler( async(req,res) =>{
-    const {name,email, password} = req.body
-    //or req.body.email
+const registerUser = async_handler(async (req, res) => {
+    const { name, email, password } = req.body;
 
-    //validation
-    if(!name || !email || !password){
-        res.status(400)
-        throw new Error('please fill in all required fields')
+    // Validation
+    if (!name || !email || !password) {
+        res.status(400);
+        throw new Error('Please fill in all required fields');
     }
-    if (password.length < 6){
-        res.status(400)
-        throw new Error('password must be up to 6 characters')
+
+    if (password.length < 6) {
+        res.status(400);
+        throw new Error('Password must be at least 6 characters');
     }
-    //check if user email already exist
-    const user_exist = await User.findOne({email})
-    if(user_exist){
-        res.status(404)
-        throw new Error('Email has already been registered')
+
+    // Check if the user email already exists
+    const userExist = await User.findOne({ email });
+
+    if (userExist) {
+        res.status(404);
+        throw new Error('Email has already been registered');
     }
-    
-// Encrypt password
 
-// const salt = await bcrypt.genSalt(10)
-// const harshedpassword = await bcrypt.hash(password,salt)
-  
-
-
-    //create new user
+    // Create a new user
     const user = await User.create({
-        name:name,
-        email:email,
-        password:password
-    })
-    //Generate token 
-    const token = generateToken(user._id)
+        name,
+        email,
+        password,
+    });
 
-    //send HTTP ONL COOKIE
+    // Generate token
+    const token = generateToken(user._id);
 
+    // Send token to the client 
     res.cookie('token', token, {
-        path:'/',
-        httpOnly:true,
-        // expires:new Date(Date.now() + 1000 * 86400), //1 day
+        path: '/',
+        httpOnly: true,
         expires: new Date('9999-12-31T23:59:59Z'),
-        sameSite:'none',
-        secure:true
+        sameSite: 'none',
+        secure: true,
+    });
 
-    })
-    //get user back
-    if (user){
-        const { _id, name, email, photo } = user;
-        res.status(201).json({
-            _id,
-            name,
-            email,
-            photo,
-            token,
+    // Send user data and token in the response
+    res.status(201).json({
+        _id: user._id,
+        name: user.name,
+        email: user.email,
+        photo: user.photo,
+        token,
+    });
+});
 
-        })
-    }else{
-        res.status(400)
-        throw new Error('Invalid User')
-    }
-
-     });
 
      //Login User 
-     const loginUser = async_handler(async(req,res) =>{
-        // res.send('login user')
-        const {email,password} = req.body
-        // validate request
-        if(!email || !password){
+     const loginUser = async_handler(async (req, res) => {
+        const { email, password } = req.body;
+    
+        // Validate request
+        if (!email || !password) {
             res.status(400);
-            throw new Error('please add email and password')
+            throw new Error('Please provide both email and password');
         }
-        // check if email exist 
-        const user = await User.findOne({email})
-       
-        if (!user){
+    
+        // Check if email exists
+        const user = await User.findOne({ email });
+    
+        if (!user) {
             res.status(400);
-            throw new Error('User not found  plesae sign up');
+            throw new Error('User not found, please sign up');
         }
-        //user exists , check if password is correct 
-        const passwordIsCorrect = await bcrypt.compare(password,user.password)
-        //send HTTP ONL COOKIE
+    
+        // Check if the password is correct
+        const passwordIsCorrect = await bcrypt.compare(password, user.password);
+    
+        if (!passwordIsCorrect) {
+            res.status(400);
+            throw new Error('Invalid email or password');
+        }
+    
+        // Generate token
         const token = generateToken(user._id);
-
-        if(passwordIsCorrect){
-            res.cookie('token', token, {
-                path:'/',
-                httpOnly:true,
-                // expires:new Date(Date.now() + 1000 * 86400), //1 day
-                expires: new Date('9999-12-31T23:59:59Z'),
-                sameSite:'none',
-                secure:true
-        
-            })
-        }
-        if (user && passwordIsCorrect){
-            const { _id, name, email, photo, phone, bio,password } = user;
-            res.status(200).json({
-                _id,
-                name,
-                email,
-                photo,
-                phone,
-                bio,
-                password,
-                token,
-            });
-
-        }else{
-            res.status(400);
-            throw new Error('invalid email or password')
-        }
-    }
-
-     )
+    
+        // Send token to the client (Flutter)
+        res.status(200).json({
+            _id: user._id,
+            name: user.name,
+            email: user.email,
+            photo: user.photo,
+            phone: user.phone,
+            bio: user.bio,
+            token, // Send the token to the client
+        });
+    });
+    
 
      //logout user
-     const logOutUser = async_handler(async(req,res) =>{
-        res.cookie('token', '', {
-            path:'/',
-            httpOnly:true,
-            expires:new Date(0), //1 day
-            sameSite:'none',
-            secure:true
+   
+const logOutUser = async_handler(async (req, res) => {
     
-        });
-        return res.status(200).json({message:'logout succesfully'})
-     })
-     
+    return res.status(200).json({ message: 'logout successfully' });
+ });
+ 
 // Get Userconst 
     const getUser = async_handler(async(req,res) =>{
         const user = await User.findById(req.user._id)
