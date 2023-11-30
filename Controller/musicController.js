@@ -2,15 +2,42 @@ const async_handler = require("express-async-handler");
 const MusicModel = require("../Model/musicModel"); // Make sure to import your model correctly
 const { fileSizeFormatter } = require("../utility/uploads");
 const cloudinary = require("cloudinary").v2;
+const jwt = require('jsonwebtoken');
 
 const addMusic = async_handler(async (req, res) => {
-  const { name, description, genre } = req.body;
+  const { name, description, genre,artist } = req.body;
 
   // Validation
-  if (!name || !genre) {
+  if (!name || !genre || !artist) {
     res.status(400);
     throw new Error('Please fill in all fields');
   }
+
+  // Check if the user is authenticated
+  const authToken = req.headers.authorization;
+
+  if (!authToken || !authToken.startsWith('Bearer ')) {
+    res.status(401);
+    throw new Error('Unauthorized. Please provide a valid authentication token.');
+  }
+  
+  const token = authToken.split(' ')[1];
+  
+
+  // Validate and decode the authentication token
+  let userId;
+  console.log('Received token:', authToken);
+
+try {
+  const decodedToken = jwt.verify(token, process.env.JWT_SECRET, { algorithms: ['HS256'] });
+  console.log('Decoded token:', decodedToken);
+  userId = decodedToken.id;
+} catch (error) {
+  console.error('Error verifying token:', error);
+  res.status(401);
+  throw new Error('Invalid authentication token.');
+}
+
 
   // Upload image
   let imageFileData = {};
@@ -64,15 +91,18 @@ const addMusic = async_handler(async (req, res) => {
 
   // Create music
   const createdMusic = await MusicModel.create({
-    user: req.user.id,
+    user: userId, // Use the decoded user ID from the authentication token
     name,
     genre,
+    artist,
     description,
     image: imageFileData,
     audio: audioFileData,
   });
 
   res.status(201).json(createdMusic);
+
+ 
 });
 
 // // get all musics

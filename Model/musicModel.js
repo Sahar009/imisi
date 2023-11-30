@@ -18,6 +18,11 @@ genre: {
     required:[true,'please add a genre'],
     trim:true
 },
+artist: {
+    type:String,
+    required:[true,'please add a genre'],
+    trim:true
+},
 
 description: {
     type:String,
