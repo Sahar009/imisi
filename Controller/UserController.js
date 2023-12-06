@@ -4,7 +4,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const Token = require('../Model/tokenModel')
 const crypto = require('crypto');
-// const sendMail = require('../utility/sendMail');
+const sendMail = require('../utility/sendMail');
 
 
 //functtion to generate a token with user id
@@ -262,7 +262,7 @@ const UpdateUser = async_handler( async(req,res)=>{
     
     <a href=${resetURL} clicktracking=off>${resetURL}</a>
     <p>Regards...</p>
-    <p>Sahar009</p>`
+    <p>Imisi App</p>`
     
     const subject = "Password Reset Request";
     const send_to = user.email;

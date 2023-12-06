@@ -6,11 +6,11 @@ userId :{
     required: true,
     ref:'user'
 },
-listenerId: {
-    type: mongoose.Schema.Types.ObjectId,
-    required: true,
-    ref: 'listener' // Reference to another model, replace 'anotherModel' with the actual model name
-  },
+// listenerId: {
+//     type: mongoose.Schema.Types.ObjectId,
+//     required: true,
+//     ref: 'listener' // Reference to another model, replace 'anotherModel' with the actual model name
+//   },
 token:{
     type:String,
     required:true

@@ -10,6 +10,7 @@ const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
 const errorHandler = require('../middleware/errorMiddleware')
 const path = require("path");
+const playlistRoutes=require('../Route/PlayListRoute')
 const serverPath = path.resolve(__dirname, "server.js");
 require(serverPath);
 
@@ -30,6 +31,7 @@ app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 app.use("/api/users", userRoute);
 app.use("/api/listeners", listenerRoute);
 app.use("/api/musics", musicRoute);
+app.use('/api/playlists', playlistRoutes);
 
 // error handler
 app.use(errorHandler)

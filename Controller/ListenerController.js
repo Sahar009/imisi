@@ -4,7 +4,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const Token = require('../Model/tokenModel')
 const crypto = require('crypto');
-// const sendMail = require('../utility/sendMail');
+const sendMail = require('../utility/sendMail');
 
 
 //functtion to generate a token with user id
@@ -70,6 +70,7 @@ const registerListener = async_handler( async(req,res) =>{
             _id,
             name,
             email,
+            photo,
             token,
 
         })

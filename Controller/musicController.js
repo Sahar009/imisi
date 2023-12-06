@@ -48,7 +48,7 @@ try {
         resource_type: "image",
         cloud_name: 'dvjdvvnn3', 
         api_key: '897445842132443', 
-        api_secret: 'H1XjbfjR1TOhWQeEhSjZWXcGyzs' 
+        api_secret: 'H1XjbfjR1TOhWQeEhSjZWXcGyzs'
       });
 
       imageFileData = {
