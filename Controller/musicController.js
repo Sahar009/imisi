@@ -42,9 +42,9 @@ const addMusic = async_handler(async (req, res) => {
       const uploadedImage = await cloudinary.uploader.upload(req.files['image'][0].path, {
         folder: 'imisi audio',
         resource_type: 'image',
-        cloud_name: 'dvjdvvnn3',
-        api_key: '897445842132443',
-        api_secret: 'H1XjbfjR1TOhWQeEhSjZWXcGyzs',
+        // cloud_name: 'dvjdvvnn3',
+        // api_key: '897445842132443',
+        // api_secret: 'H1XjbfjR1TOhWQeEhSjZWXcGyzs',
       });
 
       imageFileData = {

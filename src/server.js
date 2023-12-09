@@ -1,6 +1,9 @@
 const express = require("express");
 const { default: mongoose } = require("mongoose");
 const app = express();
+const cloudinary = require('cloudinary').v2;
+
+
 const userRoute = require("../Route/UserRoute");
 const listenerRoute = require("../Route/ListenerRoute");
 const musicRoute = require("../Route/musicRoute");
@@ -35,6 +38,13 @@ app.use('/api/playlists', playlistRoutes);
 
 // error handler
 app.use(errorHandler)
+
+// Configure Cloudinary with your credentials
+cloudinary.config({
+  cloud_name: 'dvjdvvnn3',
+  api_key: '897445842132443',
+  api_secret: 'H1XjbfjR1TOhWQeEhSjZWXcGyzs',
+});
 
 mongoose
   .connect(
