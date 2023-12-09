@@ -5,7 +5,7 @@ const cloudinary = require("cloudinary").v2;
 const jwt = require('jsonwebtoken');
 
 const addMusic = async_handler(async (req, res) => {
-  const { name, description, genre,artist } = req.body;
+  const { name, description, genre, artist } = req.body;
 
   // Validation
   if (!name || !genre || !artist) {
@@ -20,35 +20,31 @@ const addMusic = async_handler(async (req, res) => {
     res.status(401);
     throw new Error('Unauthorized. Please provide a valid authentication token.');
   }
-  
+
   const token = authToken.split(' ')[1];
-  
 
   // Validate and decode the authentication token
   let userId;
-  console.log('Received token:', authToken);
 
-try {
-  const decodedToken = jwt.verify(token, process.env.JWT_SECRET, { algorithms: ['HS256'] });
-  console.log('Decoded token:', decodedToken);
-  userId = decodedToken.id;
-} catch (error) {
-  console.error('Error verifying token:', error);
-  res.status(401);
-  throw new Error('Invalid authentication token.');
-}
-
+  try {
+    const decodedToken = jwt.verify(token, process.env.JWT_SECRET, { algorithms: ['HS256'] });
+    userId = decodedToken.id;
+  } catch (error) {
+    console.error('Error verifying token:', error);
+    res.status(401);
+    throw new Error('Invalid authentication token.');
+  }
 
   // Upload image
   let imageFileData = {};
   if (req.files && req.files['image'] && req.files['image'][0]) {
     try {
       const uploadedImage = await cloudinary.uploader.upload(req.files['image'][0].path, {
-        folder: "imisi audio",
-        resource_type: "image",
-        cloud_name: 'dvjdvvnn3', 
-        api_key: '897445842132443', 
-        api_secret: 'H1XjbfjR1TOhWQeEhSjZWXcGyzs'
+        folder: 'imisi audio',
+        resource_type: 'image',
+        cloud_name: 'dvjdvvnn3',
+        api_key: '897445842132443',
+        api_secret: 'H1XjbfjR1TOhWQeEhSjZWXcGyzs',
       });
 
       imageFileData = {
@@ -58,8 +54,8 @@ try {
         fileSize: fileSizeFormatter(req.files['image'][0].size, 2),
       };
     } catch (error) {
-      console.error("Error uploading image to Cloudinary:", error);
-      res.status(500).json({ error: "Image could not be uploaded", details: error.message });
+      console.error('Error uploading image to Cloudinary:', error);
+      res.status(500).json({ error: 'Image could not be uploaded', details: error.message });
       return;
     }
   }
@@ -69,29 +65,32 @@ try {
   if (req.files && req.files['audio'] && req.files['audio'][0]) {
     try {
       const uploadedAudio = await cloudinary.uploader.upload(req.files['audio'][0].path, {
-        folder: "imisi audio",
-        resource_type: "auto",
-        cloud_name: 'dvjdvvnn3', 
-        api_key: '897445842132443', 
-        api_secret: 'H1XjbfjR1TOhWQeEhSjZWXcGyzs' 
+        folder: 'imisi audio',
+        resource_type: 'auto',
+        cloud_name: 'dvjdvvnn3',
+        api_key: '897445842132443',
+        api_secret: 'H1XjbfjR1TOhWQeEhSjZWXcGyzs',
       });
-     
+
       audioFileData = {
         fileName: req.files['audio'][0].originalname,
         filePath: uploadedAudio.secure_url,
         fileType: req.files['audio'][0].mimetype,
         fileSize: fileSizeFormatter(req.files['audio'][0].size, 2),
       };
+
+      // Log the uploaded audio details
+      console.log('Uploaded Audio:', uploadedAudio);
     } catch (error) {
-      console.error("Error uploading audio to Cloudinary:", error);
-  res.status(500).json({ error: "Audio could not be uploaded", details: error.message });
-  return;
+      console.error('Error uploading audio to Cloudinary:', error);
+      res.status(500).json({ error: 'Audio could not be uploaded', details: error.message });
+      return;
     }
   }
 
   // Create music
   const createdMusic = await MusicModel.create({
-    user: userId, // Use the decoded user ID from the authentication token
+    user: userId,
     name,
     genre,
     artist,
@@ -101,9 +100,8 @@ try {
   });
 
   res.status(201).json(createdMusic);
-
- 
 });
+
 
 // // get all musics
 const getMusics = async_handler(async (req, res) => {
