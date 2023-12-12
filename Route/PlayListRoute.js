@@ -1,5 +1,6 @@
 const express = require('express');
-const protect = require('../middleware/listenermiddleware');
+const protect = require('../middleware/Authmiddleware');
+
 const {
   createPlaylist,
   getPlaylists,

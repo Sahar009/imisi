@@ -4,7 +4,7 @@ const playlistSchema = mongoose.Schema({
   user: {
     type: mongoose.Schema.Types.ObjectId,
     required: true,
-    ref: 'Listener',
+    ref: 'Profile', // Reference the common base model
   },
   name: {
     type: String,

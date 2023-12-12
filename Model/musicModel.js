@@ -1,46 +1,46 @@
-const mongoose = require('mongoose')
+const mongoose = require('mongoose');
 
 const musicSchema = mongoose.Schema({
-user :{
-    type:mongoose.Schema.Types.ObjectId,
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
     required: true,
-    ref:'User'
-},
+    ref: 'User',
+  },
+  listener: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Listener',
+  },
+  name: {
+    type: String,
+    required: [true, 'please add a name'],
+    trim: true,
+  },
+  genre: {
+    type: String,
+    required: [true, 'please add a genre'],
+    trim: true,
+  },
+  artist: {
+    type: String,
+    required: [true, 'please add an artist'],
+    trim: true,
+  },
+  description: {
+    type: String,
+    required: [true, 'please add a description'],
+    trim: true,
+  },
+  image: {
+    type: Object,
+    default: {},
+  },
+  audio: {
+    type: Object,
+    default: {},
+  },
+}, {
+  timestamps: true,
+});
 
-name: {
-    type:String,
-    required:[true, 'please add a name'],
-    trim:true
-},
-
-genre: {
-    type:String,
-    required:[true,'please add a genre'],
-    trim:true
-},
-artist: {
-    type:String,
-    required:[true,'please add a genre'],
-    trim:true
-},
-
-description: {
-    type:String,
-    required:[true,'please add a description'],
-    trim:true
-},
-image: {
-    type:Object,
-   default:{}
-},
-audio: {
-    type:Object,
-   default:{}
-}
-
-},{
-    timestamps:true
-})
-
-const Music = mongoose.model('Music', musicSchema)
-module.exports = Music
+const Music = mongoose.model('Music', musicSchema);
+module.exports = Music;

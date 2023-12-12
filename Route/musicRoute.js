@@ -4,9 +4,16 @@ const router = express.Router()
 const protect = require('../middleware/Authmiddleware');
 const { addMusic, getMusics, getMusic, deleteMusic, updateMusic} = require('../Controller/musicController');
 const { upload } = require("../utility/uploads");
+const listenerProtect = require('../middleware/listenermiddleware');
 
 router.post('/', protect, upload.fields([{ name: 'image', maxCount: 1 }, { name: 'audio', maxCount: 1 }]), addMusic);
-router.get('/',protect,  getMusics);
+// // For regular users
+router.get('/', protect, getMusics);
+
+// // // For listeners
+// router.get('/', listenerProtect, getMusics);
+
+  
 router.get("/:id", protect,getMusic);
 router.delete("/:id", protect, deleteMusic);
 // router.patch("/:id", protect, upload.single("image"), updateMusic);

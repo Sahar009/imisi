@@ -14,6 +14,7 @@ const cookieParser = require("cookie-parser");
 const errorHandler = require('../middleware/errorMiddleware')
 const path = require("path");
 const playlistRoutes=require('../Route/PlayListRoute')
+const advertRoutes = require('../Route/advertRoute');
 const serverPath = path.resolve(__dirname, "server.js");
 require(serverPath);
 
@@ -35,6 +36,7 @@ app.use("/api/users", userRoute);
 app.use("/api/listeners", listenerRoute);
 app.use("/api/musics", musicRoute);
 app.use('/api/playlists', playlistRoutes);
+app.use('/api/advertisements',advertRoutes)
 
 // error handler
 app.use(errorHandler)

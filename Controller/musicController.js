@@ -8,10 +8,11 @@ const addMusic = async_handler(async (req, res) => {
   const { name, description, genre, artist } = req.body;
 
   // Validation
-  if (!name || !genre || !artist) {
+  if (!name || !genre || !artist ) {
     res.status(400);
     throw new Error('Please fill in all fields');
   }
+ 
 
   // Check if the user is authenticated
   const authToken = req.headers.authorization;
@@ -20,6 +21,7 @@ const addMusic = async_handler(async (req, res) => {
     res.status(401);
     throw new Error('Unauthorized. Please provide a valid authentication token.');
   }
+ 
 
   const token = authToken.split(' ')[1];
 
@@ -35,6 +37,11 @@ const addMusic = async_handler(async (req, res) => {
     throw new Error('Invalid authentication token.');
   }
 
+   // Check if both audio and image files are present
+   if (!req.files || !req.files['audio'] || !req.files['image']) {
+    res.status(400);
+    throw new Error('Please add both an audio and an image file.');
+  }
   // Upload image
   let imageFileData = {};
   if (req.files && req.files['image'] && req.files['image'][0]) {
@@ -79,8 +86,8 @@ const addMusic = async_handler(async (req, res) => {
         fileSize: fileSizeFormatter(req.files['audio'][0].size, 2),
       };
 
-      // Log the uploaded audio details
-      console.log('Uploaded Audio:', uploadedAudio);
+      // // Log the uploaded audio details
+      // console.log('Uploaded Audio:', uploadedAudio);
     } catch (error) {
       console.error('Error uploading audio to Cloudinary:', error);
       res.status(500).json({ error: 'Audio could not be uploaded', details: error.message });
@@ -104,15 +111,16 @@ const addMusic = async_handler(async (req, res) => {
 
 
 // // get all musics
+// Get all musics
 const getMusics = async_handler(async (req, res) => {
-  
-
   // Use the 'find' method to retrieve all music records
   const musics = await MusicModel.find().sort('-createdAt');
 
-  // Respond with a JSON containing all the retrieved music records
+  // Respond with the retrieved music data
   res.status(200).json(musics);
 });
+
+
 
 // // Get single music
 const getMusic = async_handler(async (req, res) => {

@@ -1,8 +1,9 @@
-const async_handler = require('express-async-handler');
+const asyncHandler = require('express-async-handler');
 const User = require('../Model/userModel');
+const Listener = require('../Model/listenerModel');
 const jwt = require('jsonwebtoken');
 
-const protect = async_handler(async (req, res, next) => {
+const protect = asyncHandler(async (req, res, next) => {
   try {
     const authorizationHeader = req.headers.authorization;
 
@@ -17,15 +18,19 @@ const protect = async_handler(async (req, res, next) => {
     // Verify Token
     const verified = jwt.verify(token, process.env.JWT_SECRET);
 
-    // Get user id from token
+    // Get user or listener id from token
     const user = await User.findById(verified.id).select('-password');
+    const listener = await Listener.findById(verified.id).select('-password');
 
-    if (!user) {
+    if (user) {
+      req.user = user;
+    } else if (listener) {
+      req.listener = listener;
+    } else {
       res.status(401);
-      throw new Error('User not found');
+      throw new Error('User or listener not found');
     }
 
-    req.user = user;
     next();
   } catch (error) {
     res.status(401);
