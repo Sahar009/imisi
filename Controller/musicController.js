@@ -49,9 +49,9 @@ const addMusic = async_handler(async (req, res) => {
       const uploadedImage = await cloudinary.uploader.upload(req.files['image'][0].path, {
         folder: 'imisi audio',
         resource_type: 'image',
-        cloud_name: 'dvjdvvnn3',
-        api_key: '897445842132443',
-        api_secret: 'H1XjbfjR1TOhWQeEhSjZWXcGyzs',
+        // cloud_name: 'dvjdvvnn3',
+        // api_key: '897445842132443',
+        // api_secret: 'H1XjbfjR1TOhWQeEhSjZWXcGyzs',
       });
 
       imageFileData = {
@@ -60,7 +60,7 @@ const addMusic = async_handler(async (req, res) => {
         fileType: req.files['image'][0].mimetype,
         fileSize: fileSizeFormatter(req.files['image'][0].size, 2),
       };
-    } catch (error) {
+    }catch (error) {
       console.error('Error uploading image to Cloudinary:', error);
       res.status(500).json({ error: 'Image could not be uploaded', details: error.message });
       return;
@@ -74,9 +74,9 @@ const addMusic = async_handler(async (req, res) => {
       const uploadedAudio = await cloudinary.uploader.upload(req.files['audio'][0].path, {
         folder: 'imisi audio',
         resource_type: 'auto',
-        cloud_name: 'dvjdvvnn3',
-        api_key: '897445842132443',
-        api_secret: 'H1XjbfjR1TOhWQeEhSjZWXcGyzs',
+        // cloud_name: 'dvjdvvnn3',
+        // api_key: '897445842132443',
+        // api_secret: 'H1XjbfjR1TOhWQeEhSjZWXcGyzs',
       });
 
       audioFileData = {

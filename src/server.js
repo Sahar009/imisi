@@ -21,6 +21,12 @@ require(serverPath);
 app.get("/", (req, res) => {
   res.send("Home page");
 });
+// Configure Cloudinary with your credentials
+cloudinary.config({
+  cloud_name: 'dvjdvvnn3',
+  api_key: '897445842132443',
+  api_secret: 'H1XjbfjR1TOhWQeEhSjZWXcGyzs',
+});
 
 
 
@@ -41,12 +47,6 @@ app.use('/api/advertisements',advertRoutes)
 // error handler
 app.use(errorHandler)
 
-// Configure Cloudinary with your credentials
-cloudinary.config({
-  cloud_name: 'dvjdvvnn3',
-  api_key: '897445842132443',
-  api_secret: 'H1XjbfjR1TOhWQeEhSjZWXcGyzs',
-});
 
 mongoose
   .connect(
