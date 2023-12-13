@@ -3,7 +3,7 @@ const { default: mongoose } = require("mongoose");
 const app = express();
 const cloudinary = require('cloudinary').v2;
 
-
+const protect = require('../middleware/Authmiddleware')
 const userRoute = require("../Route/UserRoute");
 const listenerRoute = require("../Route/ListenerRoute");
 const musicRoute = require("../Route/musicRoute");
@@ -38,6 +38,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 //route middleware
 //Routes middleware
+app.use(protect);
 app.use("/api/users", userRoute);
 app.use("/api/listeners", listenerRoute);
 app.use("/api/musics", musicRoute);

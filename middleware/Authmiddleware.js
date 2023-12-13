@@ -3,6 +3,7 @@ const User = require('../Model/userModel');
 const Listener = require('../Model/listenerModel');
 const jwt = require('jsonwebtoken');
 
+
 const protect = asyncHandler(async (req, res, next) => {
   try {
     const authorizationHeader = req.headers.authorization;
@@ -37,5 +38,7 @@ const protect = asyncHandler(async (req, res, next) => {
     throw new Error('Not authorized, please login');
   }
 });
+
+
 
 module.exports = protect;

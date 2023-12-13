@@ -1,6 +1,7 @@
 const asyncHandler = require('express-async-handler');
 const PlaylistModel = require('../Model/playlistModel');
 const MusicModel =require('../Model/musicModel')
+
 const createPlaylist = asyncHandler(async (req, res) => {
   const { name } = req.body;
 
@@ -10,20 +11,27 @@ const createPlaylist = asyncHandler(async (req, res) => {
     throw new Error('Please provide a name for the playlist');
   }
 
+  // Determine the creator based on the available property (req.user or req.listener)
+  const creatorId = req.user ? req.user.id : req.listener.id;
+
   // Create playlist
   const createdPlaylist = await PlaylistModel.create({
-    user: req.user.id,
+    user: creatorId,
     name,
-    
   });
 
   res.status(201).json(createdPlaylist);
 });
 
+
 const getPlaylists = asyncHandler(async (req, res) => {
-  const playlists = await PlaylistModel.find({ user: req.user.id }).sort('-createdAt');
+  // Determine the creator based on the available property (req.user or req.listener)
+  const creatorId = req.user ? req.user.id : req.listener.id;
+
+  const playlists = await PlaylistModel.find({ user: creatorId }).sort('-createdAt');
   res.status(200).json(playlists);
 });
+
 
 const getPlaylist = asyncHandler(async (req, res) => {
   const playlist = await PlaylistModel.findById(req.params.id).populate('musics');
