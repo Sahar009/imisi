@@ -23,9 +23,9 @@ app.get("/", (req, res) => {
 });
 // Configure Cloudinary with your credentials
 cloudinary.config({
-  cloud_name: 'dvjdvvnn3',
-  api_key: '897445842132443',
-  api_secret: 'H1XjbfjR1TOhWQeEhSjZWXcGyzs',
+  cloud_name: 'ds5nnf5hi',
+  api_key: '362823846319858',
+  api_secret: 'kjlomN4fuFuRsl06Csmsp3yLt0M',
 });
 
 
