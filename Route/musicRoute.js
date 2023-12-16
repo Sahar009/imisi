@@ -10,10 +10,7 @@ router.post('/', protect, upload.fields([{ name: 'image', maxCount: 1 }, { name:
 // // For regular users
 router.get('/', protect, getMusics);
 
-// // // For listeners
-// router.get('/', listenerProtect, getMusics);
 
-  
 router.get("/:id", protect,getMusic);
 router.delete("/:id", protect, deleteMusic);
 // router.patch("/:id", protect, upload.single("image"), updateMusic);

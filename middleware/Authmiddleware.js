@@ -3,18 +3,16 @@ const User = require('../Model/userModel');
 const Listener = require('../Model/listenerModel');
 const jwt = require('jsonwebtoken');
 
-
 const protect = asyncHandler(async (req, res, next) => {
   try {
     const authorizationHeader = req.headers.authorization;
 
+    // If no token is provided, allow unauthenticated access
     if (!authorizationHeader || !authorizationHeader.startsWith('Bearer')) {
-      res.status(401);
-      throw new Error('Not authorized, please login');
+      return next();
     }
 
     const token = authorizationHeader.split(' ')[1];
-    console.log('Received token:', token);
 
     // Verify Token
     const verified = jwt.verify(token, process.env.JWT_SECRET);
@@ -38,7 +36,5 @@ const protect = asyncHandler(async (req, res, next) => {
     throw new Error('Not authorized, please login');
   }
 });
-
-
 
 module.exports = protect;
