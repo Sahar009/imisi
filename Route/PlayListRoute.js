@@ -6,7 +6,8 @@ const {
   getPlaylists,
   getPlaylist,
   deletePlaylist,
-  addMusicToPlaylist
+  addMusicToPlaylist,
+  removeMusicFromPlaylist
 } = require('../Controller/playListController');
 const router = express.Router();
 
@@ -16,5 +17,7 @@ router.post('/create', protect, createPlaylist);
 router.get('/list', protect, getPlaylists);
 router.get('/:id', protect, getPlaylist);
 router.delete('/:id', protect, deletePlaylist);
+router.delete('/:playlistId/removeMusic/:musicId', protect, removeMusicFromPlaylist);
+
 
 module.exports = router;
