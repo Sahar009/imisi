@@ -40,6 +40,12 @@ const userSchema = mongoose.Schema({
 //     enum: ['user', 'listener'],
 //     default: 'user',
 //   },
+favorites: [
+  {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Favorite',
+  },
+],
 },
 {
   timestamps: true,

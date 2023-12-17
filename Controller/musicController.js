@@ -3,7 +3,7 @@ const MusicModel = require("../Model/musicModel"); // Make sure to import your m
 const { fileSizeFormatter } = require("../utility/uploads");
 const cloudinary = require("cloudinary").v2;
 const jwt = require('jsonwebtoken');
-
+const Favorite = require('../Model/favoriteModel')
 const addMusic = async_handler(async (req, res) => {
   const { name, description, genre, artist } = req.body;
 
@@ -212,6 +212,41 @@ const deleteMusic = async_handler(async (req, res) => {
 //   });
   
 
+//add music to favorite
+
+// const addMusicToFavorites = async_handler(async (req, res) => {
+//   const { musicId } = req.params;
+
+//   // Check if the music is already in favorites
+//   const existingFavorite = await Favorite.findOne({
+//     user: req.user._id,
+//     music: musicId,
+//   });
+
+//   if (existingFavorite) {
+//     res.status(400);
+//     throw new Error('Music is already in favorites');
+//   }
+
+//   // Create a new favorite
+//   const favorite = await Favorite.create({
+//     user: req.user._id,
+//     music: musicId,
+//   });
+
+//   // Add the favorite to the user's favorites array
+//   req.user.favorites.push(favorite._id);
+//   await req.user.save();
+
+//   res.status(200).json({ message: 'Music added to favorites successfully' });
+// });
+
+
+
+
+
+
+
 
 module.exports ={
     addMusic,
@@ -219,5 +254,6 @@ module.exports ={
     getMusic,
     // // updateMusic,
     deleteMusic,
+    // addMusicToFavorites
     
 }

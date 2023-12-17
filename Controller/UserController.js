@@ -311,6 +311,34 @@ const UpdateUser = async_handler( async(req,res)=>{
         });
       });
 
+      //favorite part 
+
+      
+    //   const getUserFavorites = async_handler(async (req, res) => {
+    //     const userWithFavorites = await User.findById(req.user._id).populate({
+    //       path: 'favorites',
+    //       populate: {
+    //         path: 'music',
+    //         model: 'Music', // Adjust this to match your music model name
+    //       },
+    //     });
+      
+    //     if (!userWithFavorites) {
+    //       res.status(404);
+    //       throw new Error('User not found');
+    //     }
+      
+    //     const favoritesWithMusicDetails = userWithFavorites.favorites.map((favorite) => ({
+    //       id: favorite.music._id,
+    //       title: favorite.music.title,
+    //       artist: favorite.music.artist,
+    //       music : favorite.music.audio
+    //       // Add other music details as needed
+    //     }));
+      
+    //     res.status(200).json(favoritesWithMusicDetails);
+    //   });
+  
 module.exports ={
     registerUser,
     loginUser,
@@ -321,6 +349,7 @@ module.exports ={
     ChangePassword,
     forgotpassword,
     resetPassword,
+    // getUserFavorites
    
   
 }

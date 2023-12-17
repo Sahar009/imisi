@@ -17,7 +17,7 @@ const router = express.Router();
 router.get("/test", test);
 router.post("/register", registerListener);
 router.post("/login", loginListener);
-router.get("/logout", logOutListener);
+router.post("/logout", logOutListener);
 router.get("/getuser", protect, getListener);
 router.get("/loggedin", loggedInStatus);
 router.patch("/updateuser", protect, UpdateListener);
