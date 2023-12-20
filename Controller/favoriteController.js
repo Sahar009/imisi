@@ -76,6 +76,7 @@ const getAllFavoriteMusic = asyncHandler(async (req, res) => {
       return {
         id: musicId._id,
         title: musicId.title,
+        name:musicId.name,
         artist: musicId.artist,
         audio: musicId.audio,
         image:musicId.image

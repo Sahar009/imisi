@@ -16,6 +16,7 @@ const path = require("path");
 const playlistRoutes=require('../Route/PlayListRoute')
 const advertRoutes = require('../Route/advertRoute');
 const favoriteRoutes = require('../Route/favoriteRoute')
+const listenRoute = require('../Controller/ListenControler')
 const serverPath = path.resolve(__dirname, "server.js");
 require(serverPath);
 
@@ -46,6 +47,7 @@ app.use("/api/musics", musicRoute);
 app.use('/api/playlists', playlistRoutes);
 app.use('/api/advertisements',advertRoutes);
 app.use('/api', favoriteRoutes);
+app.use('/api',listenRoute)
 
 // error handler
 app.use(errorHandler)

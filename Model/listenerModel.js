@@ -29,9 +29,17 @@ const listenerSchema = mongoose.Schema({
 favorites: [
   {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Music', // Assuming your Music model is named 'Music'
+    ref: 'Music',
   },
 ],
+points: {
+  type: Number,
+  default: 0,
+},
+listenedSongs: [{
+  type: mongoose.Schema.Types.ObjectId,
+  ref: 'Music', 
+}],
 },
 {
   timestamps: true,
