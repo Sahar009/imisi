@@ -6,7 +6,7 @@ const jwt = require('jsonwebtoken');
 const Favorite = require('../Model/favoriteModel')
 const addMusic = async_handler(async (req, res) => {
   const { name, description, genre, artist } = req.body;
-
+  console.log('Received request:', req.files);
   // Validation
   if (!name || !genre || !artist ) {
     res.status(400);
@@ -109,10 +109,10 @@ const addMusic = async_handler(async (req, res) => {
 // // get all musics
 // Get all musics
 const getMusics = async_handler(async (req, res) => {
-  // Use the 'find' method to retrieve all music records
+ 
   const musics = await MusicModel.find().sort('-createdAt');
 
-  // Respond with the retrieved music data
+
   res.status(200).json(musics);
 });
 

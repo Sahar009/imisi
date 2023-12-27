@@ -18,30 +18,35 @@ router.post('/listen/:musicId', asyncHandler(async (req, res) => {
   
     const UserModel = req.user ? User : Listener;
   
-    const [user, music] = await Promise.all([
-      UserModel.findById(userId),
-      Music.findById(musicId),
-    ]);
-  
-    if (!user || !music) {
-      res.status(404).json({ error: 'User or music not found' });
-      return;
-    }
-  
     try {
-      // Update points and listened songs
+      const [user, music] = await Promise.all([
+        UserModel.findById(userId),
+        Music.findById(musicId),
+      ]);
+  
+      if (!user || !music) {
+        res.status(404).json({ error: 'User or music not found' });
+        return;
+      }
+  
+     
     //   user.points += 1;
       user.listenedSongs.push(musicId);
-  
-      // Check if the count of listened songs is a multiple of 4
+
       if (user.listenedSongs.length % 4 === 0) {
         user.points += 1;
       }
   
-      // Save the changes
+      // Check if the count of listened songs is a multiple of 4
+      const shouldPlayAdvertisement = user.listenedSongs.length % 4 === 0;
+  
       await user.save();
   
-      res.status(200).json({ message: 'Song listened successfully', user });
+      res.status(200).json({
+        message: 'Song listened successfully',
+        playAdvertisement: shouldPlayAdvertisement,
+        user,
+      });
     } catch (error) {
       console.error(error);
       res.status(500).json({ error: 'Internal server error' });
@@ -49,4 +54,3 @@ router.post('/listen/:musicId', asyncHandler(async (req, res) => {
   }));
   
   module.exports = router;
-  

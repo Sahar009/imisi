@@ -39,7 +39,7 @@ const getPlaylist = asyncHandler(async (req, res) => {
     res.status(404);
     throw new Error('Playlist not found');
   }
-  res.status(200).json(playlist);
+  res.status(200).json(playlist.musics);
 });
 
 const deletePlaylist = asyncHandler(async (req, res) => {

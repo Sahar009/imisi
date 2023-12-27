@@ -2,7 +2,7 @@ const express = require("express");
 const { default: mongoose } = require("mongoose");
 const app = express();
 const cloudinary = require('cloudinary').v2;
-
+const cors = require('cors')
 const protect = require('../middleware/Authmiddleware')
 const userRoute = require("../Route/UserRoute");
 const listenerRoute = require("../Route/ListenerRoute");
@@ -38,6 +38,7 @@ app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(express.urlencoded({ extended: false }));
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+app.use(cors())
 //route middleware
 //Routes middleware
 app.use(protect);
