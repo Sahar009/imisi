@@ -27,9 +27,12 @@ function fileFilter(req, file, cb) {
     cb(null, false);
   }
 }
+const limits = {
+  fileSize: 100 * 1024 * 1024, // 10 MB
+  // files: 5, // maximum number of files
+};
 
-
-const upload = multer({ storage, fileFilter });
+const upload = multer({ storage, fileFilter,limits });
 
 // File Size Formatter
 const fileSizeFormatter = (bytes, decimal) => {
