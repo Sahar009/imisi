@@ -10,10 +10,10 @@ const { getUserFavorites } = require('../Controller/UserController');
 
 router.post('/', protect, upload.fields([{ name: 'image', maxCount: 1 }, { name: 'audio', maxCount: 1 }]), addMusic);
 // // For regular users
-router.get('/', protect, getMusics);
+router.get('/', getMusics);
 
 
-router.get("/:id", protect,getMusic);
+router.get("/:id",getMusic);
 router.delete("/:id", protect, deleteMusic);
 // router.patch("/:id", protect, upload.single("image"), updateMusic);
 // router.post('/:musicId/add', protect, addMusicToFavorites);

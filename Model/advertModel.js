@@ -1,33 +1,29 @@
 const mongoose = require('mongoose');
 
 const advertisementSchema = mongoose.Schema({
-  type: {
-    type: String,
-    enum: ['audio', 'video'],
-    required: true,
-  },
-  content: {
-
-    audio: {
-      fileName: String,
-      filePath: String,
-      fileType: String,
-     
+  advertisements: [{
+    type: {
+      type: String,
+      enum: ['audio', 'video'],
+      required: true,
     },
-   
-    video: {
-      fileName: String,
-      filePath: String,
-      fileType: String,
-      
+    content: {
+      audio: {
+        fileName: String,
+        filePath: String,
+        fileType: String,
+      },
+      video: {
+        fileName: String,
+        filePath: String,
+        fileType: String,
+      },
     },
-   
-  },
-  duration: {
-    type: Number,
-    required: true,
-  },
-  
+    duration: {
+      type: Number,
+      required: true,
+    },
+  }],
 });
 
 const Advertisement = mongoose.model('Advertisement', advertisementSchema);
