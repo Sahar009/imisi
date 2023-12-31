@@ -5,59 +5,36 @@ const cloudinary = require("cloudinary").v2;
 const multer = require('multer');
 
 const createAdvertisement = async_handler(async (req, res) => {
-  const { type, duration } = req.body;
+  const { type, link } = req.body;
 
-  // Validate request parameters
-  if (!type || !['audio', 'video'].includes(type) || !duration) {
-    res.status(400);
-    throw new Error('Invalid request parameters');
+  if (!type || !link) {
+    res.status(400).json({ error: 'Invalid request parameters' });
+    return;
   }
 
-  let contentData = {};
+  try {
+    // Find the existing advertisement (assuming you have a single document for all advertisements)
+    let existingAdvertisement = await Advertisement.findOne();
 
-  // Check if the request contains an audio or video file
-  if (type === 'audio' && req.files && req.files['audio']) {
-    const audioFile = req.files['audio'][0];
-    contentData.audio = await uploadFile(audioFile);
-  } else if (type === 'video' && req.files && req.files['video']) {
-    const videoFile = req.files['video'][0];
-    contentData.video = await uploadFile(videoFile);
-  } else {
-    res.status(400);
-    throw new Error('Please provide a valid audio or video file');
+    // If no existing document, create a new one
+    if (!existingAdvertisement) {
+      existingAdvertisement = await Advertisement.create({});
+    }
+
+    // Push the new advertisement into the array
+    existingAdvertisement.advertisements.push({ type, content: { [type]: { link } } });
+
+    // Save the updated document
+    const updatedAdvertisement = await existingAdvertisement.save();
+
+    res.status(201).json(updatedAdvertisement);
+  } catch (error) {
+    console.error('Error creating advertisement:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
   }
-
-  // Create the advertisement
-  const createdAdvertisement = await Advertisement.create({
-    type,
-    content: contentData,
-    duration,
-  });
-
-  res.status(201).json({ message: 'Advertisement created successfully', advertisement: createdAdvertisement });
 });
 
-// Helper function to upload a file to Cloudinary
-const uploadFile = async (file) => {
-  try {
-    const uploadedFile = await cloudinary.uploader.upload(file.path, {
-      folder: 'imisi audio',
-      resource_type: 'auto',
-    });
-
-    return {
-      fileName: file.originalname,
-      filePath: uploadedFile.secure_url,
-      fileType: file.mimetype,
-    };
-  } catch (error) {
-    console.error('Error uploading file to Cloudinary:', error);
-    throw new Error('File could not be uploaded');
-  }
-};
-
-
-
+//play random advert
 const playRandomAdvertisement = async_handler(async (req, res) => {
   // Retrieve all advertisements
   const advertisement = await Advertisement.findOne();
@@ -74,7 +51,10 @@ const playRandomAdvertisement = async_handler(async (req, res) => {
   // Logic to play the advertisement (you may have a different mechanism)
   console.log(`Playing Advertisement: ${randomAd.content}`);
 
-  res.status(200).json({ message: 'Advertisement played successfully', advertisement: randomAd });
+  // Assuming 'link' is the property where you store the video link
+  const videoLink = randomAd.content.video.link;
+
+  res.status(200).json({ message: 'Advertisement played successfully', videoLink });
 });
 
 module.exports = {

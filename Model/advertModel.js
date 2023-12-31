@@ -8,20 +8,14 @@ const advertisementSchema = mongoose.Schema({
       required: true,
     },
     content: {
-      audio: {
-        fileName: String,
-        filePath: String,
-        fileType: String,
+      audio:  {
+        type: Object,
+        default: {},
       },
-      video: {
-        fileName: String,
-        filePath: String,
-        fileType: String,
+      video:  {
+        type: Object,
+        default: {},
       },
-    },
-    duration: {
-      type: Number,
-      required: true,
     },
   }],
 });
