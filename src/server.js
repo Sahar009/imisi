@@ -50,7 +50,7 @@ app.use("/api/videos", videoRoute);
 app.use('/api/playlists', playlistRoutes);
 app.use('/api/advertisements',advertRoutes);
 app.use('/api', favoriteRoutes);
-app.use('/api',listenRoute)
+app.use('/api/listen',listenRoute)
 
 // error handler
 app.use(errorHandler)

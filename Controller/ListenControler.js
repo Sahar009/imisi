@@ -7,7 +7,7 @@ const { default: mongoose } = require('mongoose');
 
 const router = express.Router();
 // Route to handle listening to music
-router.post('/listen/:musicId', asyncHandler(async (req, res) => {
+router.post('/:musicId', asyncHandler(async (req, res) => {
     const { musicId } = req.params;
     const userId = req.user ? req.user._id : req.listener._id;
   
@@ -52,5 +52,25 @@ router.post('/listen/:musicId', asyncHandler(async (req, res) => {
       res.status(500).json({ error: 'Internal server error' });
     }
   }));
+
+  router.get('/points', asyncHandler(async (req, res) => {
+    const userId = req.user ? req.user._id : req.listener._id;
+
+    const UserModel = req.user ? User : Listener;
+
+    try {
+        const user = await UserModel.findById(userId);
+
+        if (!user) {
+            res.status(404).json({ error: 'User not found' });
+            return;
+        }
+
+        res.status(200).json({ points: user.points });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+}));
   
   module.exports = router;
