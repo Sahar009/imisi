@@ -1,5 +1,5 @@
 const async_handler = require("express-async-handler");
-const MusicModel = require("../Model/musicModel"); // Make sure to import your model correctly
+const MusicModel = require("../Model/musicModel"); 
 const { fileSizeFormatter } = require("../utility/uploads");
 const cloudinary = require("cloudinary").v2;
 const jwt = require('jsonwebtoken');
@@ -250,4 +250,4 @@ module.exports ={
     deleteMusic,
     // addMusicToFavorites
     
-}
+} 

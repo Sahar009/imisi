@@ -49,7 +49,7 @@ const playRandomAdvertisement = async_handler(async (req, res) => {
   const randomAd = advertisement.advertisements[randomIndex];
 
   // Logic to play the advertisement (you may have a different mechanism)
-  console.log(`Playing Advertisement: ${randomAd.content}`);
+  // console.log(`Playing Advertisement: ${randomAd.content}`);
 
   // Assuming 'link' is the property where you store the video link
   const videoLink = randomAd.content.video.link;

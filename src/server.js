@@ -7,6 +7,7 @@ const protect = require('../middleware/Authmiddleware')
 const userRoute = require("../Route/UserRoute");
 const listenerRoute = require("../Route/ListenerRoute");
 const musicRoute = require("../Route/musicRoute");
+const videoRoute = require('../Route/videoRoute')
 const dotenv = require("dotenv").config();
 const PORT = 5000;
 const bodyParser = require("body-parser");
@@ -45,6 +46,7 @@ app.use(protect);
 app.use("/api/users", userRoute);
 app.use("/api/listeners", listenerRoute);
 app.use("/api/musics", musicRoute);
+app.use("/api/videos", videoRoute);
 app.use('/api/playlists', playlistRoutes);
 app.use('/api/advertisements',advertRoutes);
 app.use('/api', favoriteRoutes);
