@@ -34,13 +34,19 @@ const getPlaylists = asyncHandler(async (req, res) => {
 
 
 const getPlaylist = asyncHandler(async (req, res) => {
-  const playlist = await PlaylistModel.findById(req.params.id).populate('musics');
+  const playlist = await PlaylistModel.findById(req.params.id).populate({
+    path: 'musics',
+    select: 'name genre artist description image audio', // Specify the fields you want to include
+  });
+
   if (!playlist) {
     res.status(404);
     throw new Error('Playlist not found');
   }
+
   res.status(200).json(playlist.musics);
 });
+
 
 const deletePlaylist = asyncHandler(async (req, res) => {
   const playlistId = req.params.id;
