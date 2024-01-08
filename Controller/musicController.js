@@ -236,7 +236,20 @@ const deleteMusic = async_handler(async (req, res) => {
 // });
 
 
+// const deleteAllMusic = async_handler(async (req, res) => {
+//   // Find all music documents
+//   const allMusic = await MusicModel.find();
 
+//   if (allMusic.length === 0) {
+//     res.status(404);
+//     throw new Error("No music found");
+//   }
+
+//   // Delete all music documents
+//   await MusicModel.deleteMany({});
+
+//   res.status(200).json({ message: "All music successfully deleted." });
+// });
 
 
 
@@ -249,5 +262,6 @@ module.exports ={
     // // updateMusic,
     deleteMusic,
     // addMusicToFavorites
+    // deleteAllMusic
     
 } 

@@ -8,7 +8,7 @@ const addVideo = async_handler(async (req, res) => {
   const { name, description, genre, artist } = req.body;
 
   // Validation
-  if (!name || !description) {
+  if (!name || !description ||  !genre || !artist) {
     res.status(400);
     throw new Error('Please fill in all fields');
   }
@@ -36,11 +36,32 @@ const addVideo = async_handler(async (req, res) => {
   }
 
   // Check if the video file is present
-  if (!req.files || !req.files['video']) {
+  if (!req.files || !req.files['video'] || !req.files['image']) {
     res.status(400);
-    throw new Error('Please add a video file.');
+    throw new Error('Please add a video file and thumbnail file.');
   }
 
+   // Upload image
+   let imageFileData = {};
+   if (req.files && req.files['image'] && req.files['image'][0]) {
+     try {
+       const uploadedImage = await cloudinary.uploader.upload(req.files['image'][0].path, {
+         folder: 'imisi videos/thumbnails',
+         resource_type: 'image',
+       });
+ 
+       imageFileData = {
+         fileName: req.files['image'][0].originalname,
+         filePath: uploadedImage.secure_url,
+         fileType: req.files['image'][0].mimetype,
+         fileSize: fileSizeFormatter(req.files['image'][0].size, 2),
+       };
+     } catch (error) {
+       console.error('Error uploading image to Cloudinary:', error);
+       res.status(500).json({ error: 'Image could not be uploaded', details: error.message });
+       return;
+     }
+   }
   // Upload video
   let videoFileData = {};
   if (req.files && req.files['video'] && req.files['video'][0]) {
@@ -67,9 +88,10 @@ const addVideo = async_handler(async (req, res) => {
   const createdVideo = await VideoModel.create({
     user: userId,
     name,
-    description,
     artist,
     genre,
+    description,
+    image:imageFileData,
     video: videoFileData,
   });
 

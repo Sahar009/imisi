@@ -32,10 +32,12 @@ const videoSchema = mongoose.Schema({
   },
   image: {
     type: Object,
+    // required: [true, 'please add thumbnail'],
     default: {},
   },
   video: {
     type: Object,
+    // required: [true, 'please add a video file'],
     default: {},
   },
 }, {
